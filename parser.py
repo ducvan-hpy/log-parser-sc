@@ -21,7 +21,10 @@ class ContainsDollarCondition:
 
 class DotEndingCondition:
     def is_valid(lc : int, line : str) -> bool:
-        return line[-1] == "."
+        try:
+            return line[-1] == "."
+        except IndexError:
+            return False
 
     def render(lc : int, line : str) -> None:
         print("{} : {}".format(lc, line))
@@ -29,7 +32,10 @@ class DotEndingCondition:
 
 class CurlBracketStartingCondition:
     def is_valid(lc : int, line : str) -> bool:
-        return line[0] == "{"
+        try:
+            return line[0] == "{"
+        except IndexError:
+            return False
 
     def render(lc : int, line : str) -> None:
         data = json.loads(line)
