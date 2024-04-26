@@ -61,24 +61,26 @@ class DefaultCondition(Condition):
         print("{} : Rien à afficher".format(lc))
 
 
-if __name__ == "__main__":
-    condition_classes = [
-        Multiple5Condition,
-        ContainsDollarCondition,
-        DotEndingCondition,
-        CurlBracketStartingCondition,
-        DefaultCondition,
-    ]
+CONDITION_CLASSES = [
+    Multiple5Condition,
+    ContainsDollarCondition,
+    DotEndingCondition,
+    CurlBracketStartingCondition,
+    DefaultCondition,
+]
 
-    filename = "data.log"
-
+def parse_file(filename: str) -> None:
     lc = 0
-
     with open(filename, "r") as f:
         for line in f:
             line = line.rstrip()
-            for cc in condition_classes:
+            for cc in CONDITION_CLASSES:
                 if cc.is_valid(lc, line):
                     cc.render(lc, line)
                     break
             lc += 1
+
+
+if __name__ == "__main__":
+    filename = "data.log"
+    parse_file(filename)
