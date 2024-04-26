@@ -1,8 +1,18 @@
 #! /usr/bin/env python3
 
+from abc import ABC, abstractmethod
 import json
 
-class Multiple5Condition:
+class Condition(ABC):
+    @abstractmethod
+    def is_valid(lc : int, line : str) -> bool:
+        pass
+
+    @abstractmethod
+    def render(lc : int, line : str) -> None:
+        pass
+
+class Multiple5Condition(Condition):
     def is_valid(lc : int, line : str) -> bool:
         return lc % 5 == 0
 
@@ -10,7 +20,7 @@ class Multiple5Condition:
         print("{} : Multiple de 5".format(lc))
 
 
-class ContainsDollarCondition:
+class ContainsDollarCondition(Condition):
     def is_valid(lc : int, line : str) -> bool:
         return "$" in line
 
@@ -19,7 +29,7 @@ class ContainsDollarCondition:
         print("{} : {}".format(lc, line))
 
 
-class DotEndingCondition:
+class DotEndingCondition(Condition):
     def is_valid(lc : int, line : str) -> bool:
         try:
             return line[-1] == "."
@@ -30,7 +40,7 @@ class DotEndingCondition:
         print("{} : {}".format(lc, line))
 
 
-class CurlBracketStartingCondition:
+class CurlBracketStartingCondition(Condition):
     def is_valid(lc : int, line : str) -> bool:
         try:
             return line[0] == "{"
@@ -43,7 +53,7 @@ class CurlBracketStartingCondition:
         print("{} : {}".format(lc, json.dumps(data, ensure_ascii=False)))
 
 
-class DefaultCondition:
+class DefaultCondition(Condition):
     def is_valid(lc : int, line : str) -> bool:
         return True
 
