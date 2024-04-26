@@ -40,7 +40,7 @@ class CurlBracketStartingCondition:
     def render(lc : int, line : str) -> None:
         data = json.loads(line)
         data["pair"] = lc % 2 == 0
-        print("{} : {}".format(lc, json.dumps(data)))
+        print("{} : {}".format(lc, json.dumps(data, ensure_ascii=False)))
 
 
 class DefaultCondition:
