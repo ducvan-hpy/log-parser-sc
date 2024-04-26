@@ -69,15 +69,18 @@ CONDITION_CLASSES = [
     DefaultCondition,
 ]
 
+def compute_line(lc: int, line: str) -> str:
+    for cc in CONDITION_CLASSES:
+        if cc.is_valid(lc, line):
+            return cc.render(lc, line)
+    return ""
+
 def parse_file(filename: str) -> None:
     lc = 0
     with open(filename, "r") as f:
         for line in f:
             line = line.rstrip()
-            for cc in CONDITION_CLASSES:
-                if cc.is_valid(lc, line):
-                    print("{} : {}".format(lc, cc.render(lc, line)))
-                    break
+            print("{} : {}".format(lc, compute_line(lc, line)))
             lc += 1
 
 
