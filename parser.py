@@ -9,24 +9,24 @@ class Condition(ABC):
         pass
 
     @abstractmethod
-    def render(lc: int, line: str) -> None:
+    def render(lc: int, line: str) -> str:
         pass
 
 class Multiple5Condition(Condition):
     def is_valid(lc: int, line: str) -> bool:
         return lc % 5 == 0
 
-    def render(lc: int, line: str) -> None:
-        print("{} : Multiple de 5".format(lc))
+    def render(lc: int, line: str) -> str:
+        return "Multiple de 5"
 
 
 class ContainsDollarCondition(Condition):
     def is_valid(lc: int, line: str) -> bool:
         return "$" in line
 
-    def render(lc: int, line: str) -> None:
+    def render(lc: int, line: str) -> str:
         line = line.replace(" ", "_")
-        print("{} : {}".format(lc, line))
+        return line
 
 
 class DotEndingCondition(Condition):
@@ -36,8 +36,8 @@ class DotEndingCondition(Condition):
         except IndexError:
             return False
 
-    def render(lc: int, line: str) -> None:
-        print("{} : {}".format(lc, line))
+    def render(lc: int, line: str) -> str:
+        return line
 
 
 class CurlBracketStartingCondition(Condition):
@@ -47,18 +47,18 @@ class CurlBracketStartingCondition(Condition):
         except IndexError:
             return False
 
-    def render(lc: int, line: str) -> None:
+    def render(lc: int, line: str) -> str:
         data = json.loads(line)
         data["pair"] = lc % 2 == 0
-        print("{} : {}".format(lc, json.dumps(data, ensure_ascii=False)))
+        return json.dumps(data, ensure_ascii=False)
 
 
 class DefaultCondition(Condition):
     def is_valid(lc: int, line: str) -> bool:
         return True
 
-    def render(lc: int, line: str) -> None:
-        print("{} : Rien à afficher".format(lc))
+    def render(lc: int, line: str) -> str:
+        return "Rien à afficher"
 
 
 CONDITION_CLASSES = [
@@ -76,7 +76,7 @@ def parse_file(filename: str) -> None:
             line = line.rstrip()
             for cc in CONDITION_CLASSES:
                 if cc.is_valid(lc, line):
-                    cc.render(lc, line)
+                    print("{} : {}".format(lc, cc.render(lc, line)))
                     break
             lc += 1
 
